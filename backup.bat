@@ -43,7 +43,7 @@ echo ======================= >> %THELOGFN%
 %MYARCHIVER% ^
   u %MYARCHIVEDIR%\%THEARCHIVEFN% ^
   -tzip ^
-  -mx=0 ^
+  -mx=1 ^
   -mtc=on ^
   -mmt=off ^
   -o:%MYARCHIVEDIR% ^

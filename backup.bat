@@ -1,5 +1,6 @@
 :: 2016-04-20
 :: Tessein -- simple batch archive script
+:: still needs work
 
 @echo OFF
 

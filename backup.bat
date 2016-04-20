@@ -5,7 +5,12 @@
 
 SET MYBACKUPDIR=c:\Users\Chartes\Desktop\Backup
 SET MYARCHIVEDIR=%MYBACKUPDIR%\Archive
+
 SET THELOGFN=%MYBACKUPDIR%\backup_log.txt
+
+SET MYARCHIVER=%MYBACKUPDIR%\7za
+SET EXCLUDEFILE=%MYBACKUPDIR%\exclude
+SET INCLUDEFILE=%MYBACKUPDIR%\include
 
 SET THEDATE=%DATE:~-4%-%DATE:~4,2%-%DATE:~7,2%
 
@@ -21,9 +26,10 @@ SET THETIME=%HOUR%-%MINUTE%-%SECOND%
 SET THETIMEFMTCLN=%HOUR%:%MINUTE%:%SECOND%
 
 SET THEARCHIVEFN=%THEDATE%_%THETIME%.zip
+SET MYARCHIVEFULLPATH=%MYARCHIVEDIR%\%THEARCHIVEFN%
 
 @echo ON
-@echo STARTING BACKUP TO FILE:  %MYARCHIVEDIR%\%THEARCHIVEFN%
+@echo STARTING BACKUP TO FILE:  %MYARCHIVEFULLPATH%
 @echo OFF
 
 echo. >> %THELOGFN%
@@ -32,11 +38,18 @@ cd c:\Development
 echo %THEARCHIVEFN% >> %THELOGFN% 
 echo ======================= >> %THELOGFN%
 
-%MYBACKUPDIR%\7za ^
+:: Create a zip archive with timestamps and max compression
+%MYARCHIVER% ^
   u %MYARCHIVEDIR%\%THEARCHIVEFN% ^
-  -tzip -mx=9 -mtc=on -o:%%MYARCHIVEDIR% ^
-  -x@%MYBACKUPDIR%\exclude  ^
-  -i@%MYBACKUPDIR%\include >> %THELOGFN%
+  -tzip ^
+  -mx=0 ^
+  -mtc=on ^
+  -mmt=off ^
+  -o:%MYARCHIVEDIR% ^
+  -x@%EXCLUDEFILE%  ^
+  -i@%INCLUDEFILE% >> %THELOGFN% 2>&1
 
-echo -------------------- >> %THELOGFN%
+echo.>> %THELOGFN%
+echo %DATE% %TIME% >> %THELOGFN%
+echo -------------------------- >> %THELOGFN%
 echo. >> %THELOGFN%
